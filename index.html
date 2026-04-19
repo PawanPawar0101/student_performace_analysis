@@ -21,22 +21,37 @@
       --glow: rgba(79, 142, 255, 0.18);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Base reset (important for mobile) */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Main body */
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'DM Sans', sans-serif;
+
       min-height: 100vh;
-      overflow-x: hidden;
+      width: 100%;
+
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    /* BG Grid */
+
+    /* 🌐 Responsive Grid Background */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
+
       background-image:
-        linear-gradient(rgba(79,142,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(79,142,255,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(79,142,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,142,255,0.035) 1px, transparent 1px);
+
+      background-size: clamp(30px, 5vw, 50px) clamp(30px, 5vw, 50px);
+
       pointer-events: none;
       z-index: 0;
     }
@@ -50,20 +65,57 @@
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.4rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-    .nav-badge {
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 5px 14px; border-radius: 99px;
-      font-size: 0.78rem; color: var(--muted); letter-spacing: 0.5px;
-    }
-    .nav-badge span { color: var(--green); }
+    .logo-wrapper {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      border-radius: 12px;
+      padding: 2px;
 
+      /* 🌈 Animated gradient border */
+      background: linear-gradient(
+        270deg,
+        #ff0000,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+      );
+      background-size: 600%;
+
+      animation: gradientMove 6s linear infinite;
+    }
+
+    /* Inner logo */
+    .logo {
+      background: #020617; /* match your theme */
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      letter-spacing: 1px;
+
+      /* subtle glow */
+      text-shadow: 0 0 8px #38bdf8;
+    }
+
+    /* 🌈 Smooth moving colors */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 600% 50%; }
+    }
+    @media (max-width: 480px) {
+    .logo-wrapper {
+      top: 10px;
+      left: 10px;
+    }
+  }
     /* HERO */
     .hero {
       position: relative; z-index: 1;
@@ -77,44 +129,58 @@
       color: var(--accent); margin-bottom: 20px; letter-spacing: 0.5px;
     }
     h1 {
-       font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.2px;
-      margin-bottom: 18px;
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
 
-      /* Gradient text */
-      background: linear-gradient(
-        135deg,
-        #ffffff 0%,
-        #c7d2fe 25%,
-        #60a5fa 55%,
-        #3b82f6 100%      
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+  /* 🌈 Animated Gradient Text */
+  background: linear-gradient(
+    120deg,
+    #ffffff,
+    #c7d2fe,
+    #60a5fa,
+    #3b82f6,
+    #60a5fa,
+    #c7d2fe,
+    #ffffff
+  );
+  background-size: 200% auto;
 
-      /* Glow effect */
-      text-shadow:
-        0 0 10px rgba(96,165,250,0.25),
-        0 0 30px rgba(59,130,246,0.15);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-      /* Smooth animation */
-      animation: fadeGlow 2s ease-in-out infinite alternate;
-    }
-    @keyframes fadeGlow {
-      from {
-       text-shadow:
-          0 0 6px rgba(96,165,250,0.15),
-          0 0 20px rgba(59,130,246,0.1);
-      }
-      to {
-        text-shadow:
-          0 0 14px rgba(96,165,250,0.35),
-          0 0 40px rgba(59,130,246,0.25);
-      }
-    }   
+  /* ✨ Soft Glow (non-irritating) */
+  text-shadow:
+    0 0 8px rgba(96,165,250,0.15),
+    0 0 20px rgba(59,130,246,0.1);
+
+  /* 🎬 Smooth color animation */
+  animation: gradientMove 6s ease-in-out infinite,
+             softGlow 3s ease-in-out infinite alternate;
+}
+
+/* 🌈 Gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ✨ Subtle glow breathing */
+@keyframes softGlow {
+  from {
+    text-shadow:
+      0 0 6px rgba(96,165,250,0.12),
+      0 0 16px rgba(59,130,246,0.08);
+  }
+  to {
+    text-shadow:
+      0 0 12px rgba(96,165,250,0.22),
+      0 0 30px rgba(59,130,246,0.15);
+  }
+}
     .hero p {
       color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0 auto 30px;
       line-height: 1.7;
@@ -356,10 +422,12 @@
   </style>
 </head>
 <body>
-
+<div class="logo-wrapper">
+  <div class="logo">EduPredict</div>
+</div>
 <div class="hero">
-  <h1>Predict Student Academic<br/>Performance with AI</h1>
-  <p>Enter student data and our machine learning model predicts academic performance with personalized insights and recommendations.</p>
+  <h1>Student Performance<br/>Prediction</h1>
+  <p id="typing-text" >Enter student data and our machine learning model predicts academic performance with personalized insights and recommendations.</p>
   <div class="stats-row">
     <div class="stat"><div class="stat-num">89%</div><div class="stat-label">Model Accuracy</div></div>
     <div class="stat"><div class="stat-num">14</div><div class="stat-label">Input Features</div></div>
@@ -754,7 +822,37 @@ Content-Type: application/json
 <div class="toast" id="toast"></div>
 
 <script>
-  let API_URL = 'http://127.0.0.1:5001';
+  let API_URL = 'https://student-performace-analysis.onrender.com';
+  function typeWriter(elementId, speed = 30) {
+    const el = document.getElementById(elementId);
+    if (!el) return; // safety
+
+    const fullText = el.textContent.trim();
+    el.textContent = "";
+
+    let i = 0;
+
+    function typing() {
+      if (i < fullText.length) {
+        el.textContent += fullText.charAt(i);
+
+        let delay = speed;
+
+        // natural pause on punctuation
+        if (".,!?".includes(fullText.charAt(i))) {
+          delay = speed * 6;
+        }
+
+        i++;
+        setTimeout(typing, delay);
+      }
+    }
+
+    typing();
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    typeWriter("typing-text", 30);
+  });
 
   function switchTab(tab) {
     document.querySelectorAll('.tab').forEach((t,i) => {
@@ -823,17 +921,23 @@ Content-Type: application/json
       body: JSON.stringify(payload)
     });
   
-   if (!res.ok) {
-     throw new Error(`HTTP error! status: ${res.status}`);
-    }
+  //  if (!res.ok) {
+  //    throw new Error(`HTTP error! status: ${res.status}`);
+  //   }
 
    const data = await res.json();
 
-    console.log("API Response:", data); // 🔥 DEBUG
+    console.log("API Response:", data);
 
-    if (!data.success) {
-      throw new Error(data.error || 'Prediction failed');
+    if (data && data.success) {
+      showResult(data);
+    } else {
+      showToast('❌ Prediction failed');
     }
+
+    // if (!data.success) {
+    //   throw new Error(data.error || 'Prediction failed');
+    // }
 
    showResult(data);
   
@@ -902,51 +1006,84 @@ Content-Type: application/json
     };
   }
 
-  function showResult(data) {
-    const gradeColors = { A: 'var(--green)', B: 'var(--accent)', C: 'var(--amber)', D: '#fb923c', F: 'var(--red)' };
-    const grade = data.predicted_grade;
-    const color = gradeColors[grade] || 'var(--accent)';
+    function showResult(data) {
+    try {
+      console.log("SHOW RESULT:", data);
 
-    const ring = document.getElementById('grade-ring');
-    ring.className = 'grade-ring grade-' + grade;
-    document.getElementById('grade-letter').textContent = grade;
-    document.getElementById('grade-letter').style.color = color;
-    document.getElementById('grade-label').textContent = data.grade_category.toUpperCase();
+      const gradeColors = { A: 'var(--green)', B: 'var(--accent)', C: 'var(--amber)', D: '#fb923c', F: 'var(--red)' };
+      const grade = data.predicted_grade;
+      const color = gradeColors[grade] || 'var(--accent)';
 
-    document.getElementById('score-val').textContent = data.performance_score.toFixed(1) + ' / 100';
-    setTimeout(() => {
-      document.getElementById('score-bar').style.width = data.performance_score + '%';
-    }, 100);
+      const ring = document.getElementById('grade-ring');
+      if (ring) ring.className = 'grade-ring grade-' + grade;
 
-    document.getElementById('cat-val').textContent = data.grade_category;
-    document.getElementById('cat-val').style.color = color;
-    document.getElementById('conf-val').textContent = data.confidence.toFixed(1) + '%';
+      const gradeLetter = document.getElementById('grade-letter');
+      if (gradeLetter) {
+        gradeLetter.textContent = grade;
+        gradeLetter.style.color = color;
+      }
 
-    // Recommendations
-    const recsEl = document.getElementById('recs-list');
-    recsEl.innerHTML = data.recommendations.map((r,i) =>
-      `<div class="rec-item" style="animation-delay:${i*0.08}s">${r}</div>`
-    ).join('');
+      const gradeLabel = document.getElementById('grade-label');
+      if (gradeLabel) gradeLabel.textContent = data.grade_category.toUpperCase();
 
-    // Feature importance
-    const fiEl = document.getElementById('fi-chart');
-    const maxImp = Math.max(...data.feature_importance.map(f => f.importance));
-    fiEl.innerHTML = data.feature_importance.map(f => `
-      <div class="fi-bar">
-        <div class="fi-label"><span>${f.feature}</span><span>${f.importance.toFixed(1)}%</span></div>
-        <div class="fi-track"><div class="fi-fill" style="width:0%" data-target="${(f.importance/maxImp*100)}%"></div></div>
-      </div>
-    `).join('');
-    setTimeout(() => {
-      document.querySelectorAll('.fi-fill').forEach(el => {
-        el.style.width = el.getAttribute('data-target');
-      });
-    }, 150);
+      const scoreVal = document.getElementById('score-val');
+      if (scoreVal) scoreVal.textContent = data.performance_score.toFixed(1) + ' / 100';
 
-    document.getElementById('result-box').style.display = 'block';
-    document.getElementById('result-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+      const scoreBar = document.getElementById('score-bar');
+      if (scoreBar) {
+        setTimeout(() => {
+          scoreBar.style.width = data.performance_score + '%';
+        }, 100);
+      }
 
+      const catVal = document.getElementById('cat-val');
+      if (catVal) {
+        catVal.textContent = data.grade_category;
+        catVal.style.color = color;
+      }
+
+      const confVal = document.getElementById('conf-val');
+      if (confVal) confVal.textContent = data.confidence.toFixed(1) + '%';
+
+      // Recommendations
+      const recsEl = document.getElementById('recs-list');
+      if (recsEl) {
+        recsEl.innerHTML = data.recommendations.map((r,i) =>
+          `<div class="rec-item" style="animation-delay:${i*0.08}s">${r}</div>`
+        ).join('');
+      }
+
+      // Feature importance
+      const fiEl = document.getElementById('fi-chart');
+      if (fiEl && data.feature_importance) {
+        const maxImp = Math.max(...data.feature_importance.map(f => f.importance));
+
+        fiEl.innerHTML = data.feature_importance.map(f => `
+          <div class="fi-bar">
+            <div class="fi-label"><span>${f.feature}</span><span>${f.importance.toFixed(1)}%</span></div>
+            <div class="fi-track">
+              <div class="fi-fill" style="width:0%" data-target="${(f.importance/maxImp*100)}%"></div>
+            </div>
+          </div>
+        `).join('');
+
+        setTimeout(() => {
+          document.querySelectorAll('.fi-fill').forEach(el => {
+            el.style.width = el.getAttribute('data-target');
+          });
+        }, 150);
+      }
+
+      const resultBox = document.getElementById('result-box');
+      if (resultBox) {
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+    } catch (err) {
+      console.error("UI ERROR:", err);
+    }
+}
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;

@@ -181,18 +181,31 @@ def predict_performance(features_dict, model_path):
     )
     raw_score = max(0, min(100, raw_score))
 
-    grade_map    = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'F'}
-    category_map = {0: 'Outstanding', 1: 'Good', 2: 'Average', 3: 'Below Average', 4: 'Failing'}
+    # ✅ Grade based on score (FIX)
+    if raw_score >= 90:
+        grade = 'A'
+        category = 'Outstanding'
+    elif raw_score >= 75:
+        grade = 'B'
+        category = 'Good'
+    elif raw_score >= 60:
+        grade = 'C'
+        category = 'Average'
+    elif raw_score >= 45:
+        grade = 'D'
+        category = 'Below Average'
+    else:
+        grade = 'F'
+        category = 'Failing'
 
     return {
-        "grade":            grade_map.get(pred_class, '?'),
-        "category":         category_map.get(pred_class, 'Unknown'),
+        "grade":            grade,   # ✅ FIXED
+        "category":         category, # ✅ FIXED
         "confidence":       round(conf, 2),
         "score":            round(raw_score, 2),
         "recommendations":  _recommendations(features_dict, pred_class),
         "feature_importance": _feature_importance(model, feature_cols)
     }
-
 
 def _recommendations(f, pred_class):
     recs = []
